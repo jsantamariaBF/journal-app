@@ -17,42 +17,34 @@
 </template>
 
 <script>
-import { computed, ref } from 'vue';
+const months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio','Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
+const days   = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado']
+
 
 export default {
     props: {
         entry: {
             type: Object,
-            required: true,
+            required: true
         }
     },
-    setup(props) {
-    const months = ref(['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio','Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']);
-    const days   = ref(['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado']);
-
-        const funcshortText = computed(() => {
-            return ( props.entry.text.length > 130 )
-                ? props.entry.text.substring(0,130) + '...'
-                : props.entry.text
-        }); 
-        const day = computed(() => {
-            const date = new Date( props.entry.date )
+    computed: {
+        shortText() {
+            return ( this.entry.text.length > 130 )
+                ? this.entry.text.substring(0,130) + '...'
+                : this.entry.text
+        },
+        day() {
+            const date = new Date( this.entry.date )
             return date.getDate()
-        }); 
-        const month = computed(() => {
-            const date = new Date( props.entry.date )
-            return months.value[ date.getMonth() ]
-        });
-        const yearDay = computed(() => {
-            const date = new Date( props.entry.date )
-            return `${ date.getFullYear() }, ${ days.value[ date.getDay() ] }`
-        }); 
-
-        return {  
-            funcshortText,
-            day,
-            month,
-            yearDay,
+        },
+        month() {
+            const date = new Date( this.entry.date )
+            return months[ date.getMonth() ]
+        },
+        yearDay() {
+            const date = new Date( this.entry.date )
+            return `${ date.getFullYear() }, ${ days[ date.getDay() ] }`
         }
     }
 }
